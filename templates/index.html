@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard AI — Intelligent Phishing URL Detection</title>
+    <!-- Modern Typography: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Ambient Aurora Mesh Lighting -->
+    <div class="ambient-glow glow-cyan"></div>
+    <div class="ambient-glow glow-emerald"></div>
+    <div class="ambient-glow glow-violet"></div>
+
+    <!-- Background Interactive Constellation Canvas -->
+    <canvas id="cyberCanvas"></canvas>
+
+    <!-- Sticky Glassmorphic Navigation Bar -->
+    <header class="navbar-wrapper">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span class="icon-pulse"></span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">PhishGuard<span class="gradient-text">AI</span></span>
+                    <span class="brand-subtitle">Cyber Intelligence Engine</span>
+                </div>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link active">Home</a></li>
+                <li><a href="#how-it-works" class="nav-link">Architecture</a></li>
+                <li><a href="#performance" class="nav-link">Model Benchmarks</a></li>
+                <li><a href="#features-info" class="nav-link">Threat Intel</a></li>
+            </ul>
+
+            <div class="nav-status">
+                <span class="status-pulse"></span>
+                <span class="status-text">Engine: <strong>{{ best_model_name }} (99.99%)</strong></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <i class="fa-solid fa-bolt"></i> Next-Gen URL Threat Classifier • PhiUSIIL Engine
+            </div>
+            
+            <h1 class="hero-title">
+                AI-Based Phishing <br>
+                <span class="gradient-title">URL Detection</span>
+            </h1>
+            
+            <p class="hero-subtitle">
+                Real-time lexical threat intelligence detecting malicious, typo-squatted, and spoofed URLs in milliseconds without risking remote webpage execution.
+            </p>
+
+            <!-- URL Input Card -->
+            <div class="analyzer-card">
+                <form id="urlForm" class="url-input-form" onsubmit="handleAnalyze(event)">
+                    <div class="input-wrapper">
+                        <div class="input-icon-box">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="urlInput" 
+                            name="url" 
+                            placeholder="Enter domain or link (e.g. google.com or http://secure-login.tk)" 
+                            required 
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+                        <button type="submit" id="analyzeBtn" class="btn-analyze">
+                            <span class="btn-text">
+                                <i class="fa-solid fa-shield-virus"></i> Analyze URL
+                            </span>
+                            <span class="btn-loader" style="display: none;">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i> Scanning...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Quick Test Preset Samples -->
+                <div class="presets-container">
+                    <span class="presets-label"><i class="fa-solid fa-vial-circle-check"></i> Instant Samples:</span>
+                    <button class="preset-pill legit" onclick="fillUrl('google.com')">
+                        <span class="pill-dot legit-dot"></span> google.com
+                    </button>
+                    <button class="preset-pill legit" onclick="fillUrl('wikipedia.org')">
+                        <span class="pill-dot legit-dot"></span> wikipedia.org
+                    </button>
+                    <button class="preset-pill phish" onclick="fillUrl('shprakserf.gq')">
+                        <span class="pill-dot phish-dot"></span> shprakserf.gq (Phishing)
+                    </button>
+                    <button class="preset-pill phish" onclick="fillUrl('http://secure-login-account-update.tk/banking')">
+                        <span class="pill-dot phish-dot"></span> secure-login.tk (Phishing)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Telemetry / Enterprise Metric Strip -->
+            <div class="telemetry-bar">
+                <div class="telemetry-item">
+                    <span class="telemetry-value">235,370</span>
+                    <span class="telemetry-label"><i class="fa-solid fa-database"></i> Verified URLs</span>
+                </div>
+                <div class="telemetry-divider"></div>
+                <div class="telemetry-item">
+                    <span class="telemetry-value highlight-cyan">99.99%</span>
+                    <span class="telemetry-label"><i class="fa-solid fa-bullseye"></i> Test Accuracy</span>
+                </div>
+                <div class="telemetry-divider"></div>
+                <div class="telemetry-item">
+                    <span class="telemetry-value highlight-green">&lt; 10ms</span>
+                    <span class="telemetry-label"><i class="fa-solid fa-stopwatch"></i> Inference Time</span>
+                </div>
+                <div class="telemetry-divider"></div>
+                <div class="telemetry-item">
+                    <span class="telemetry-value highlight-purple">22 Features</span>
+                    <span class="telemetry-label"><i class="fa-solid fa-microchip"></i> Lexical Signals</span>
+                </div>
+            </div>
+
+            <!-- Prediction Result Card -->
+            <div id="resultCard" class="result-card" style="{% if result %}display: block;{% else %}display: none;{% endif %}">
+                {% if result %}
+                <div class="result-header {{ result.status_color }}">
+                    <div class="result-badge-container">
+                        {% if result.is_legitimate %}
+                            <div class="result-icon legit-icon">
+                                <i class="fa-solid fa-shield-check"></i>
+                                <span class="badge-ring legit-ring"></span>
+                            </div>
+                            <div>
+                                <h2 class="result-decision legit-text">LEGITIMATE</h2>
+                                <span class="result-risk-level safe-tag"><i class="fa-solid fa-check"></i> {{ result.risk_level }}</span>
+                            </div>
+                        {% else %}
+                            <div class="result-icon phish-icon">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span class="badge-ring phish-ring"></span>
+                            </div>
+                            <div>
+                                <h2 class="result-decision phish-text">PHISHING DETECTED</h2>
+                                <span class="result-risk-level danger-tag"><i class="fa-solid fa-skull-crossbones"></i> {{ result.risk_level }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="confidence-box">
+                        <span class="confidence-title">Confidence Rating</span>
+                        <span class="confidence-value">{{ result.confidence }}%</span>
+                    </div>
+                </div>
+
+                <div class="result-url-display">
+                    <span class="url-label">Analyzed Target URL:</span>
+                    <code class="url-code" id="analyzedUrlDisplay">{{ result.url }}</code>
+                </div>
+
+                <!-- Probability Bar -->
+                <div class="prob-distribution">
+                    <div class="prob-labels">
+                        <span class="prob-label phish-label"><i class="fa-solid fa-bug"></i> Phishing Probability: <strong>{{ result.prob_phishing }}%</strong></span>
+                        <span class="prob-label legit-label"><i class="fa-solid fa-shield-heart"></i> Legitimate Probability: <strong>{{ result.prob_legitimate }}%</strong></span>
+                    </div>
+                    <div class="prob-bar-container">
+                        <div class="prob-bar phish-bar" style="width: {{ result.prob_phishing }}%;"></div>
+                        <div class="prob-bar legit-bar" style="width: {{ result.prob_legitimate }}%;"></div>
+                    </div>
+                </div>
+
+                <!-- Extracted Feature Inspection Grid -->
+                <div class="features-breakdown">
+                    <h3 class="breakdown-title"><i class="fa-solid fa-fingerprint"></i> Deep URL Feature Telemetry</h3>
+                    <div class="feature-grid">
+                        {% for name, val in result.features.items() %}
+                        <div class="feature-item">
+                            <span class="feat-name">{{ name }}</span>
+                            <span class="feat-value">{{ val }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="section">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-diagram-project"></i> Engine Architecture</span>
+                <h2 class="section-title">How the Detection Pipeline Operates</h2>
+                <p class="section-description">Multi-layered client-safe machine learning converting raw uniform resource locators into deterministic cyber risk verdicts in milliseconds.</p>
+            </div>
+
+            <div class="pipeline-cards">
+                <div class="step-card">
+                    <div class="step-num">01</div>
+                    <div class="step-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3>URL Canonicalization</h3>
+                    <p>Normalizes bare domains and parses root hosts, top-level domains, subdomains, and query parameters without making network requests.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-num">02</div>
+                    <div class="step-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h3>Lexical Feature Extraction</h3>
+                    <p>Extracts 22 quantitative indicators including digit ratios, character continuation rate, percent-encoding, and unigram probabilities.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-num">03</div>
+                    <div class="step-icon"><i class="fa-solid fa-tree"></i></div>
+                    <h3>Random Forest Ensemble</h3>
+                    <p>Feeds extracted features through an ensemble of 100 decorrelated decision trees trained on 235,000+ real-world URLs.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-num">04</div>
+                    <div class="step-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                    <h3>Calibrated Risk Verdict</h3>
+                    <p>Calculates posterior class probabilities, generates explainable feature cards, and delivers instant threat classification.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Performance Section -->
+        <section id="performance" class="section">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-chart-line"></i> Rigorous Benchmarks</span>
+                <h2 class="section-title">Empirical Machine Learning Results</h2>
+                <p class="section-description">Trained and evaluated on 47,074 unseen test URLs from the Kaggle PhiUSIIL dataset with stratified 80/20 partitioning.</p>
+            </div>
+
+            <!-- Model Metric Comparison Cards -->
+            <div class="benchmark-grid">
+                <div class="model-stat-card">
+                    <div class="model-header">
+                        <span class="model-name">Logistic Regression</span>
+                        <span class="model-type">Linear Baseline</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Accuracy:</span>
+                        <span class="stat-val highlight">99.98%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Precision (Phishing):</span>
+                        <span class="stat-val">100.00%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Recall (Phishing):</span>
+                        <span class="stat-val">99.95%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">F1-Score:</span>
+                        <span class="stat-val">99.98%</span>
+                    </div>
+                </div>
+
+                <div class="model-stat-card">
+                    <div class="model-header">
+                        <span class="model-name">Decision Tree</span>
+                        <span class="model-type">Single Tree (Depth=16)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Accuracy:</span>
+                        <span class="stat-val highlight">99.99%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Precision (Phishing):</span>
+                        <span class="stat-val">99.98%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Recall (Phishing):</span>
+                        <span class="stat-val">99.99%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">F1-Score:</span>
+                        <span class="stat-val">99.98%</span>
+                    </div>
+                </div>
+
+                <div class="model-stat-card champion">
+                    <div class="champion-ribbon"><i class="fa-solid fa-crown"></i> Champion Model</div>
+                    <div class="model-header">
+                        <span class="model-name">Random Forest</span>
+                        <span class="model-type">Ensemble (100 Trees)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Accuracy:</span>
+                        <span class="stat-val highlight">99.99%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Precision (Phishing):</span>
+                        <span class="stat-val">100.00%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Recall (Phishing):</span>
+                        <span class="stat-val">99.99%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">F1-Score:</span>
+                        <span class="stat-val">99.99%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization Plots Gallery -->
+            <div class="plots-container">
+                <h3 class="plots-title"><i class="fa-solid fa-chart-pie"></i> Visual Evidence & Model Evaluation Plots</h3>
+                <div class="plots-grid">
+                    <div class="plot-card" onclick="openModal('{{ url_for('serve_result_image', filename='class_distribution.png') }}', 'Dataset Class Distribution')">
+                        <div class="plot-img-wrapper">
+                            <img src="{{ url_for('serve_result_image', filename='class_distribution.png') }}" alt="Class Distribution" loading="lazy">
+                        </div>
+                        <div class="plot-info">
+                            <h4>Class Distribution</h4>
+                            <p>57.29% Legitimate (134,850) vs 42.71% Phishing (100,520)</p>
+                        </div>
+                    </div>
+
+                    <div class="plot-card" onclick="openModal('{{ url_for('serve_result_image', filename='model_comparison.png') }}', 'Model Comparison')">
+                        <div class="plot-img-wrapper">
+                            <img src="{{ url_for('serve_result_image', filename='model_comparison.png') }}" alt="Model Comparison" loading="lazy">
+                        </div>
+                        <div class="plot-info">
+                            <h4>Algorithm Comparison</h4>
+                            <p>Benchmarking Accuracy, Precision, Recall, and F1-Score</p>
+                        </div>
+                    </div>
+
+                    <div class="plot-card" onclick="openModal('{{ url_for('serve_result_image', filename='confusion_matrix.png') }}', 'Confusion Matrix')">
+                        <div class="plot-img-wrapper">
+                            <img src="{{ url_for('serve_result_image', filename='confusion_matrix.png') }}" alt="Confusion Matrix" loading="lazy">
+                        </div>
+                        <div class="plot-info">
+                            <h4>Confusion Matrix</h4>
+                            <p>Only 3 false classifications out of 47,074 unseen test records</p>
+                        </div>
+                    </div>
+
+                    <div class="plot-card" onclick="openModal('{{ url_for('serve_result_image', filename='feature_importance.png') }}', 'Feature Importance')">
+                        <div class="plot-img-wrapper">
+                            <img src="{{ url_for('serve_result_image', filename='feature_importance.png') }}" alt="Feature Importance" loading="lazy">
+                        </div>
+                        <div class="plot-info">
+                            <h4>Feature Importance</h4>
+                            <p>Top discriminative URL features learned by Random Forest</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Features Reference Section -->
+        <section id="features-info" class="section">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-shield-halved"></i> Threat Intelligence</span>
+                <h2 class="section-title">Anatomy of Phishing Indicators</h2>
+                <p class="section-description">Key structural patterns exploited by adversaries and how our model discriminates them.</p>
+            </div>
+
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="sec-icon"><i class="fa-solid fa-server"></i></div>
+                    <h3>Direct IP Domain Usage</h3>
+                    <p>Phishing campaigns frequently host landing pages on raw IP addresses (e.g. <code>http://192.168.1.1/...</code>) to evade domain registration audits and reputation filters.</p>
+                </div>
+
+                <div class="security-card">
+                    <div class="sec-icon"><i class="fa-solid fa-percent"></i></div>
+                    <h3>Hex & Character Obfuscation</h3>
+                    <p>Adversaries use percent-encoding (<code>%20</code>, <code>%2e</code>) and unusual escapes to conceal malicious paths and bypass simple string pattern matchers.</p>
+                </div>
+
+                <div class="security-card">
+                    <div class="sec-icon"><i class="fa-solid fa-arrow-down-9-1"></i></div>
+                    <h3>Excessive Digit & Special Char Ratios</h3>
+                    <p>Phishing URLs display abnormally elevated proportions of digits, hyphens, and delimiters in the domain name to simulate session hashes or brand spoofs.</p>
+                </div>
+
+                <div class="security-card">
+                    <div class="sec-icon"><i class="fa-solid fa-sitemap"></i></div>
+                    <h3>Subdomain Nesting</h3>
+                    <p>Cybercriminals stack multiple subdomains (e.g. <code>paypal.com.verify-user.online</code>) to deceive mobile users who only see the start of the host name.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Image Modal for Enlarged Plots -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content-wrapper" onclick="event.stopPropagation()">
+            <img id="modalImg" class="modal-img" src="" alt="Enlarged Plot">
+            <h3 id="modalCaption" class="modal-caption"></h3>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span class="footer-brand"><i class="fa-solid fa-shield-halved"></i> PhishGuard AI</span>
+                <p>3rd-Year Computer Science & Engineering Mini-Project</p>
+                <p class="footer-sub">AI-Based Phishing URL Detection Using Machine Learning</p>
+            </div>
+            <div class="footer-right">
+                <div class="tech-stack-badges">
+                    <span class="tech-pill">Python 3.13</span>
+                    <span class="tech-pill">Scikit-Learn</span>
+                    <span class="tech-pill">Random Forest</span>
+                    <span class="tech-pill">Flask</span>
+                    <span class="tech-pill">PhiUSIIL Dataset</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
